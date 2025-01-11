@@ -23,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "experiments": {
+      "baseUrl": "/ai-games"
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

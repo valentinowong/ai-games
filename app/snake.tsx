@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   PanResponder,
   PanResponderGestureState,
+  Platform,
   GestureResponderEvent,
 } from 'react-native';
 
@@ -67,27 +68,29 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          setDirection([0, -1]);
-          break;
-        case 'ArrowDown':
-          setDirection([0, 1]);
-          break;
-        case 'ArrowLeft':
-          setDirection([-1, 0]);
-          break;
-        case 'ArrowRight':
-          setDirection([1, 0]);
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    if (Platform.OS === 'web') {
+      const handleKeyDown = (event: any) => {
+        switch (event.key) {
+          case 'ArrowUp':
+            setDirection([0, -1]);
+            break;
+          case 'ArrowDown':
+            setDirection([0, 1]);
+            break;
+          case 'ArrowLeft':
+            setDirection([-1, 0]);
+            break;
+          case 'ArrowRight':
+            setDirection([1, 0]);
+            break;
+        }
+      };
+  
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
   }, [direction]);
 
   const startGame = () => {
@@ -176,7 +179,10 @@ export default function App() {
     <View style={{ flex: 1 }} {...panResponder.panHandlers}>
       <View style={styles.container}>
         <Text style={styles.title}>Snake</Text>
-        
+        <Text style={styles.instructions}>
+            Use the arrow keys or swipe to change direction.
+        </Text>
+
         <View
           style={[
             styles.board,
@@ -210,41 +216,6 @@ export default function App() {
         <Text style={styles.score}>Score: {score}</Text>
         <Text style={styles.score}>High Score: {highScore}</Text>
 
-        {/* Controls */}
-        <View style={styles.controls}>
-          <View style={styles.controlsRow}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleDirectionChange([0, -1])}
-              on
-            >
-              <Text style={styles.buttonText}>Up</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.controlsRow}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleDirectionChange([-1, 0])}
-            >
-              <Text style={styles.buttonText}>Left</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleDirectionChange([1, 0])}
-            >
-              <Text style={styles.buttonText}>Right</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.controlsRow}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleDirectionChange([0, 1])}
-            >
-              <Text style={styles.buttonText}>Down</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         {gameOver && (
           <View style={styles.overlay}>
             <Text style={styles.gameOverText}>Game Over</Text>
@@ -276,6 +247,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: '#000',
     overflow: 'hidden',
+    marginTop: 10, 
   },
   snakeSegment: {
     position: 'absolute',
@@ -290,6 +262,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f00',
   },
   score: {
+    color: '#fff',
+    marginTop: 10,
+    fontSize: 18,
+  },
+  instructions: {
     color: '#fff',
     marginTop: 10,
     fontSize: 18,
