@@ -32,7 +32,7 @@ function getRandomFoodPosition(snake: number[][]): [number, number] {
   }
 }
 
-export default function App() {
+export default function Snake() {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [direction, setDirection] = useState(INITIAL_DIRECTION);
   const [food, setFood] = useState(() => getRandomFoodPosition(INITIAL_SNAKE));
