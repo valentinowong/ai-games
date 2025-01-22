@@ -7,6 +7,8 @@ export default function App() {
         <Button title="Play Snake" onPress={() => router.push("snake")} />
         <View style={styles.separator} />
         <Button title="Play Pong" onPress={() => router.push("pong")} />
+        <View style={styles.separator} />
+        <Button title="Play Fast Math" onPress={() => router.push("math")} />
     </View>
   )
 }
